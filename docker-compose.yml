@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: watery-local-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root1234       # 루트 비밀번호
+      MYSQL_DATABASE: watery              # 기본 생성될 DB
+      MYSQL_USER: user                    # 일반 사용자 계정
+      MYSQL_PASSWORD: password            # 사용자 비밀번호
+    ports:
+      - "9898:3306"                       #
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:

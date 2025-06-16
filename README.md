@@ -65,4 +65,4 @@ resolves: #1137
 ```
 
 # ERD
-![watery_erd.png](watery_erd.png)
+![watery_erd.png](images/watery_erd.png)

@@ -28,4 +28,5 @@ public class PushAlarm {
     @Column(nullable = false)
     @Comment("on/off 설정")
     private boolean enabled;
+    
 }

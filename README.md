@@ -63,3 +63,6 @@ git commit -m "Fix: Safari에서 모달을 띄웠을 때 스크롤 이슈 수정
 
 resolves: #1137
 ```
+
+# ERD
+![watery_erd.png](images/watery_erd.png)

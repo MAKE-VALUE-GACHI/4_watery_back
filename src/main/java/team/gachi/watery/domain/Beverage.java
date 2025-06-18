@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
+import team.gachi.watery.domain.common.BaseEntity;
 import team.gachi.watery.domain.enums.BeverageCategory;
 
 @Entity
@@ -13,7 +14,7 @@ import team.gachi.watery.domain.enums.BeverageCategory;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Beverage {
+public class Beverage extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,4 +43,5 @@ public class Beverage {
     @Column(nullable = false)
     @Comment("음료 카테고리")
     private BeverageCategory category;
+
 }

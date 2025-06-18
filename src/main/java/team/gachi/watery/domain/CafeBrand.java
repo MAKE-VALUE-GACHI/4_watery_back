@@ -3,6 +3,7 @@ package team.gachi.watery.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Comment;
+import team.gachi.watery.domain.common.BaseEntity;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class CafeBrand {
+public class CafeBrand extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

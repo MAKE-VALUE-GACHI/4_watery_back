@@ -3,6 +3,7 @@ package team.gachi.watery.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Comment;
+import team.gachi.watery.domain.common.BaseEntity;
 
 import java.time.LocalDateTime;
 
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class PushNotificationLog {
+public class PushNotificationLog extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,12 +33,12 @@ public class PushNotificationLog {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @Comment("전송 상태")
-    private DeliveryStatus status;
+    private PushStatus status;
 
     @Comment("에러 메시지")
     private String errorMessage;
 
-    public enum DeliveryStatus {
+    public enum PushStatus {
         SENT, FAILED, CLICKED, IGNORED
     }
 }

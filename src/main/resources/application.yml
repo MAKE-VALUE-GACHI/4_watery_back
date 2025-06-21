@@ -39,3 +39,13 @@ spring:
     jpa:
       repositories:
         enabled: true
+
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /swagger
+    use-root-path: true
+    doc-expansion: none
+    groups-order: asc
+    tags-sorter: alpha
+    operations-sorter: alpha

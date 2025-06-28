@@ -18,13 +18,6 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    @Comment("이메일")
-    private String email;
-
-    @Comment("비밀번호")
-    private String password;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @Comment("소셜 로그인")
@@ -36,11 +29,11 @@ public class User extends BaseEntity {
     private String refreshToken;
     private String fcmToken;
 
-
     public static User of(SocialType socialType, String socialId, String fcmToken) {
         return User.builder()
                 .socialType(socialType)
                 .socialId(socialId)
+                .fcmToken(fcmToken)
                 .build();
     }
 

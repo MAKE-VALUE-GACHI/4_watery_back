@@ -1,4 +1,4 @@
-package team.gachi.watery.repository;
+package team.gachi.watery.user;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import team.gachi.watery.domain.User;

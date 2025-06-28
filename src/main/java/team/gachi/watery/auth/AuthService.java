@@ -8,7 +8,7 @@ import team.gachi.watery.auth.dto.SignInRequest;
 import team.gachi.watery.auth.dto.SignInResponse;
 import team.gachi.watery.domain.User;
 import team.gachi.watery.oauth.OAuthService;
-import team.gachi.watery.repository.UserRepository;
+import team.gachi.watery.user.UserRepository;
 
 @Service
 @RequiredArgsConstructor

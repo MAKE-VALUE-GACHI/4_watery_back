@@ -23,7 +23,6 @@ spring:
   profiles:
     active: local
 
-  # TimeZone ?? (??)
   timezone: Asia/Seoul
 
 logging:
@@ -39,3 +38,7 @@ spring:
     jpa:
       repositories:
         enabled: true
+
+watery:
+  secret:
+    key: ${WATERY_SECRET_KEY}

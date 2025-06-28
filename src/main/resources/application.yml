@@ -42,3 +42,13 @@ spring:
 watery:
   secret:
     key: ${WATERY_SECRET_KEY}
+    
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /swagger
+    use-root-path: true
+    doc-expansion: none
+    groups-order: asc
+    tags-sorter: alpha
+    operations-sorter: alpha

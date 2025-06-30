@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import team.gachi.watery.auth.dto.SignInRequest;
 import team.gachi.watery.auth.dto.SignInResponse;
 import team.gachi.watery.domain.User;
-import team.gachi.watery.oauth.OAuthService;
+import team.gachi.watery.oauth.OAuthClientResolver;
 import team.gachi.watery.user.UserRepository;
 
 @Service
@@ -16,11 +16,11 @@ import team.gachi.watery.user.UserRepository;
 public class AuthService {
     private final TokenGenerator tokenGenerator;
     private final UserRepository userRepository;
-    private final OAuthService oAuthService;
+    private final OAuthClientResolver oAuthClientResolver;
 
     @Transactional
     public SignInResponse signIn(String socialAccessToken, SignInRequest request) {
-        User.Social social = oAuthService.login(request.socialType(), socialAccessToken);
+        User.Social social = oAuthClientResolver.login(request.socialType(), socialAccessToken);
         User signedUser = signIn(social, request);
         signedUser.updateTokenInLogin(
                 tokenGenerator.generateRefreshToken(signedUser.getId()),

@@ -49,3 +49,20 @@ springdoc:
     groups-order: asc
     tags-sorter: alpha
     operations-sorter: alpha
+
+jwt:
+  secret: secret
+  access-token:
+    expiration-second: 3600  # 1 hour (60 * 60 seconds)
+  refresh-token:
+    expiration-second: 604800  # 7 days (60 * 60 * 24 * 7 seconds)
+
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /swagger
+    use-root-path: true
+    doc-expansion: none
+    groups-order: asc
+    tags-sorter: alpha
+    operations-sorter: alpha

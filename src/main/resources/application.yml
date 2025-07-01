@@ -1,48 +1,23 @@
 spring:
-  datasource:
-    url: jdbc:mysql://localhost:9898/watery?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
-
-    username: user
-    password: password
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
-  jpa:
-    hibernate:
-      ddl-auto: update  # ?? ??? update, ????? validate ?? none ??
-    show-sql: true       # ??? SQL ??
-    properties:
-      hibernate:
-        format_sql: true
-        dialect: org.hibernate.dialect.MySQL8Dialect
-    open-in-view: false  # API ?? ????? false ??
+  profiles:
+    active: local  # 기본 활성 프로필
 
   jackson:
     serialization:
-      write-dates-as-timestamps: false  # ISO 8601 ???? ?? ??
-
-  profiles:
-    active: local
-
-  timezone: Asia/Seoul
+      write-dates-as-timestamps: false
 
 logging:
   level:
     org.hibernate.SQL: debug
-    org.hibernate.type.descriptor.sql: trace  # SQL ?????? ?? ?? ?? ?
-
----
-
-# JPA Auditing ??? ? LocalDateTime ?? ??? ?? ??
-spring:
-  data:
-    jpa:
-      repositories:
-        enabled: true
-
-watery:
-  secret:
-    key: ${WATERY_SECRET_KEY}
+    org.hibernate.type.descriptor.sql: trace
     
+jwt:
+  secret: secret
+  access-token:
+    expiration-second: 3600  # 1 hour (60 * 60 seconds)
+  refresh-token:
+    expiration-second: 604800  # 7 days (60 * 60 * 24 * 7 seconds)
+
 springdoc:
   swagger-ui:
     enabled: true

@@ -9,12 +9,13 @@ import team.gachi.watery.auth.dto.SignInResponse;
 import team.gachi.watery.domain.User;
 import team.gachi.watery.oauth.OAuthClientResolver;
 import team.gachi.watery.user.UserRepository;
+import team.gachi.watery.util.JwtUtil;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class AuthService {
-    private final TokenGenerator tokenGenerator;
+    private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
     private final OAuthClientResolver oAuthClientResolver;
 
@@ -23,10 +24,10 @@ public class AuthService {
         User.Social social = oAuthClientResolver.login(request.socialType(), socialAccessToken);
         User signedUser = signIn(social, request);
         signedUser.updateTokenInLogin(
-                tokenGenerator.generateRefreshToken(signedUser.getId()),
+                jwtUtil.generateRefreshToken(signedUser.getId()),
                 request.fcmToken());
 
-        return SignInResponse.of(tokenGenerator.generateAccessToken(signedUser.getId()), signedUser);
+        return SignInResponse.of(jwtUtil.generateAccessToken(signedUser.getId()), signedUser);
     }
 
     private User signIn(User.Social social, SignInRequest request) {

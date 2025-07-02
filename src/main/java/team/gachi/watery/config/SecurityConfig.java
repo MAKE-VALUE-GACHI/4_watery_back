@@ -10,8 +10,8 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import team.gachi.watery.web.filter.CustomJwtAuthenticationEntryPoint;
-import team.gachi.watery.web.filter.JwtAuthenticationFilter;
+import team.gachi.watery.filter.CustomJwtAuthenticationEntryPoint;
+import team.gachi.watery.filter.JwtAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity

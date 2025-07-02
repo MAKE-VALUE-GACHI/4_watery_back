@@ -4,11 +4,10 @@ package team.gachi.watery.util;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTDecodeException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import org.springframework.http.HttpStatus;
-import team.gachi.watery.exception.WateryException;
+import lombok.val;
+import team.gachi.watery.auth.UserAuthentication;
 
 import java.util.Date;
 
@@ -25,47 +24,41 @@ public class JwtUtil {
         this.refreshTokenValidationSecond = refreshTokenValidationSecond;
     }
 
-    public String encodeUserId(Long userId) {
+    public String generateAccessToken(Long userId) {
+        val authentication = UserAuthentication.create(userId);
+        return generateToken(authentication, accessTokenValidationSecond);
+    }
+
+    public String generateRefreshToken(Long userId) {
+        val authentication = UserAuthentication.create(userId);
+        return generateToken(authentication, refreshTokenValidationSecond);
+    }
+
+    private String generateToken(UserAuthentication authentication, Long tokenExpirationTime) {
         return JWT.create()
-                .withClaim("userId", userId)
+                .withClaim("userId", authentication.getUserId())
                 .withIssuedAt(new Date())
-                .withExpiresAt(new Date(System.currentTimeMillis() + accessTokenValidationSecond))
+                .withExpiresAt(new Date(System.currentTimeMillis() + tokenExpirationTime))
                 .sign(algorithm);
     }
 
-    public String encodeUuid(String uuid) {
-        return JWT.create()
-                .withClaim("uuid", uuid)
-                .withIssuedAt(new Date())
-                .withExpiresAt(new Date(System.currentTimeMillis() + refreshTokenValidationSecond))
-                .sign(algorithm);
-    }
-
-    public Long decodeToken(String token) {
+    public JwtValidationType validateToken(String token) {
         try {
-            JWTVerifier verifier = JWT.require(algorithm).build();
-
-            DecodedJWT verify = verifier.verify(token);
-
-            return verify.getClaim("userId").asLong();
-            } catch (TokenExpiredException exception) {
-            throw new WateryException(HttpStatus.UNAUTHORIZED, "만료된 토큰입니다.");
-        } catch (JWTDecodeException exception) {
-            throw new WateryException(HttpStatus.INTERNAL_SERVER_ERROR, "토큰 디코딩에 실패했습니다.");
+            getDecodedJWT(token);
+            return JwtValidationType.VALID_JWT;
+        } catch (TokenExpiredException e) {
+            return JwtValidationType.EXPIRED_JWT;
+        } catch (RuntimeException exception) {
+            return JwtValidationType.INVALID_JWT;
         }
     }
 
-    public String decodeRefreshToken(String token) {
-        try {
-            JWTVerifier verifier = JWT.require(algorithm).build();
+    private DecodedJWT getDecodedJWT(String token) {
+        JWTVerifier verifier = JWT.require(algorithm).build();
+        return verifier.verify(token);
+    }
 
-            DecodedJWT verify = verifier.verify(token);
-
-            return verify.getClaim("uuid").asString();
-            } catch (TokenExpiredException exception) {
-            throw new WateryException(HttpStatus.UNAUTHORIZED, "만료된 리프레시 토큰입니다.");
-        } catch (JWTDecodeException exception) {
-            throw new WateryException(HttpStatus.INTERNAL_SERVER_ERROR, "토큰 디코딩에 실패했습니다.");
-        }
+    public Long getUserIdFromToken(String token) {
+        return getDecodedJWT(token).getClaim("userId").asLong();
     }
 }

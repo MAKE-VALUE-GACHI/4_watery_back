@@ -1,4 +1,4 @@
-package team.gachi.watery.web.filter;
+package team.gachi.watery.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;

@@ -24,4 +24,8 @@ public class UserAuthentication extends UsernamePasswordAuthenticationToken {
                 .authorities(null)
                 .build();
     }
+
+    public Long getUserId() {
+        return (Long) this.getPrincipal();
+    }
 }

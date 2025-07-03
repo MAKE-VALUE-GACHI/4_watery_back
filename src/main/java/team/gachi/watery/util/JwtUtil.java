@@ -9,6 +9,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import lombok.val;
 import team.gachi.watery.auth.UserAuthentication;
 
+import java.time.Instant;
 import java.util.Date;
 
 public class JwtUtil {
@@ -37,8 +38,8 @@ public class JwtUtil {
     private String generateToken(UserAuthentication authentication, Long tokenExpirationTime) {
         return JWT.create()
                 .withClaim("userId", authentication.getUserId())
-                .withIssuedAt(new Date())
-                .withExpiresAt(new Date(System.currentTimeMillis() + tokenExpirationTime))
+                .withIssuedAt(Date.from(Instant.now()))
+                .withExpiresAt(Date.from(Instant.now().plusSeconds(tokenExpirationTime)))
                 .sign(algorithm);
     }
 

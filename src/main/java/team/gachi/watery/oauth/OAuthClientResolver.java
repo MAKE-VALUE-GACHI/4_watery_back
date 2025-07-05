@@ -2,11 +2,11 @@ package team.gachi.watery.oauth;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import team.gachi.watery.domain.User;
 import team.gachi.watery.exception.ExceptionCode;
 import team.gachi.watery.exception.WateryException;
 import team.gachi.watery.oauth.google.GoogleOAuthClient;
 import team.gachi.watery.oauth.kakao.KakaoOAuthClient;
+import team.gachi.watery.user.User;
 
 @Component
 @RequiredArgsConstructor

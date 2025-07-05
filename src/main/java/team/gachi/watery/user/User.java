@@ -2,10 +2,7 @@ package team.gachi.watery.user;
 
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Comment;
 import team.gachi.watery.common.BaseEntity;
 import team.gachi.watery.common.Status;
@@ -15,6 +12,7 @@ import team.gachi.watery.common.Status;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder(access = AccessLevel.PRIVATE)
 public class User extends BaseEntity {
 
     @Id
@@ -50,7 +48,24 @@ public class User extends BaseEntity {
     private int dailyGoal;
 
     @Comment("상태")
-    private Status status;
+    private Status status = Status.ACTIVE;
+
+    public static User of(SocialType socialType, String socialId) {
+        return User.builder()
+                .socialType(socialType)
+                .socialId(socialId)
+                .build();
+    }
+
+    public String getRefreshToken() {
+        // TODO 수정예정
+        return null;
+    }
+
+    public void updateTokenInLogin(String refreshToken, String fcmToken) {
+        // TODO 수정예정
+
+    }
 
     public enum SocialType {
         NONE, KAKAO, GOOGLE
@@ -62,5 +77,12 @@ public class User extends BaseEntity {
 
     public enum ActivityLevel {
         LOW, NORMAL, ACTIVE, VERY_ACTIVE
+    }
+
+
+    public record Social(
+            SocialType socialType,
+            String socialId
+    ) {
     }
 }

@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.gachi.watery.auth.dto.SignInRequest;
 import team.gachi.watery.auth.dto.SignInResponse;
-import team.gachi.watery.domain.User;
 import team.gachi.watery.oauth.OAuthClientResolver;
+import team.gachi.watery.user.User;
 import team.gachi.watery.user.UserRepository;
 import team.gachi.watery.util.JwtUtil;
 

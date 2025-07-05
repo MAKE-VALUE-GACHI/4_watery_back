@@ -3,7 +3,7 @@ package team.gachi.watery.auth.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
-import team.gachi.watery.domain.User;
+import team.gachi.watery.user.User;
 
 public record SignInRequest(
         @JsonProperty("social")
@@ -14,6 +14,6 @@ public record SignInRequest(
         String fcmToken
 ) {
     public User toDomain(String socialId) {
-        return User.of(socialType, socialId, fcmToken);
+        return User.of(socialType, socialId);
     }
 }

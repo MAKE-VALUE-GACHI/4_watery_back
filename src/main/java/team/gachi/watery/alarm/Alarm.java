@@ -9,7 +9,7 @@ import org.hibernate.annotations.Comment;
 import team.gachi.watery.user.User;
 
 @Entity
-@Table(name = "alam")
+@Table(name = "alarm")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)

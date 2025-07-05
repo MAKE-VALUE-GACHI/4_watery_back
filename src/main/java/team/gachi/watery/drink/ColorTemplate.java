@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.gachi.watery.common.BaseEntity;
+import team.gachi.watery.common.StringListConverter;
 
 
 @Entity
@@ -18,7 +19,6 @@ public class ColorTemplate extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String color1;
-    private String color2;
-    private String color3;
+    @Convert(converter = StringListConverter.class)
+    private String colors;
 }

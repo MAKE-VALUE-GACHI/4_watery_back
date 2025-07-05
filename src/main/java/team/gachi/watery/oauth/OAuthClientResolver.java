@@ -1,7 +1,6 @@
 package team.gachi.watery.oauth;
 
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 import org.springframework.stereotype.Component;
 import team.gachi.watery.domain.User;
 import team.gachi.watery.exception.ExceptionCode;
@@ -17,7 +16,7 @@ public class OAuthClientResolver {
     private final GoogleOAuthClient googleOAuthClient;
 
     public User.Social getSocialData(User.SocialType socialType, String accessToken) {
-        val socialId = getSocialId(socialType, accessToken);
+        String socialId = getSocialId(socialType, accessToken);
         return new User.Social(socialType, socialId);
     }
 

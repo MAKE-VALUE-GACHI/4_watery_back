@@ -6,7 +6,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -32,11 +31,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws IOException, ServletException {
-        val token = getJwtFromRequest(request);
+        String token = getJwtFromRequest(request);
 
         if (isValidToken(token)) {
-            val userId = jwtUtil.getUserIdFromToken(token);
-            val authentication = new UserAuthentication(userId, null, null);
+            Long userId = jwtUtil.getUserIdFromToken(token);
+            UserAuthentication authentication = new UserAuthentication(userId, null, null);
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
@@ -49,7 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private String getJwtFromRequest(HttpServletRequest request) {
-        val bearerToken = request.getHeader(TOKEN_HEADER_NAME);
+        String bearerToken = request.getHeader(TOKEN_HEADER_NAME);
         return (StringUtils.hasText(bearerToken) && bearerToken.startsWith(TOKEN_PREFIX))
                 ? bearerToken.substring(TOKEN_PREFIX.length())
                 : null;

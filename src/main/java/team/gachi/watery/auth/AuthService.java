@@ -21,13 +21,14 @@ public class AuthService {
 
     @Transactional
     public SignInResponse signIn(String socialAccessToken, SignInRequest request) {
-        User.Social social = oAuthClientResolver.login(request.socialType(), socialAccessToken);
+        User.Social social = oAuthClientResolver.getSocialData(request.socialType(), socialAccessToken);
         User signedUser = signIn(social, request);
         signedUser.updateTokenInLogin(
                 jwtUtil.generateRefreshToken(signedUser.getId()),
                 request.fcmToken());
 
-        return SignInResponse.of(jwtUtil.generateAccessToken(signedUser.getId()), signedUser);
+        String accessToken = jwtUtil.generateAccessToken(signedUser.getId());
+        return SignInResponse.of(accessToken, signedUser);
     }
 
     private User signIn(User.Social social, SignInRequest request) {

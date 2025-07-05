@@ -2,7 +2,6 @@ package team.gachi.watery.auth;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import team.gachi.watery.auth.dto.SignInRequest;
@@ -25,6 +24,7 @@ public class AuthController {
             @RequestHeader("Authorization") String socialAccessToken,
             @RequestBody SignInRequest request
     ) {
-        return WateryResponse.of(authService.signIn(socialAccessToken, request), "로그인 성공");
+        SignInResponse response = authService.signIn(socialAccessToken, request);
+        return WateryResponse.of(response, "로그인 성공");
     }
 }

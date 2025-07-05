@@ -16,7 +16,7 @@ public class OAuthClientResolver {
     private final KakaoOAuthClient kakaoOAuthClient;
     private final GoogleOAuthClient googleOAuthClient;
 
-    public User.Social login(User.SocialType socialType, String accessToken) {
+    public User.Social getSocialData(User.SocialType socialType, String accessToken) {
         val socialId = getSocialId(socialType, accessToken);
         return new User.Social(socialType, socialId);
     }

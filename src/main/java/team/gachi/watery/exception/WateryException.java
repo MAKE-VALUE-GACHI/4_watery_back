@@ -1,14 +1,30 @@
 package team.gachi.watery.exception;
 
-import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
-@Getter
+import jakarta.validation.constraints.NotNull;
+
 public class WateryException extends RuntimeException {
-    private final HttpStatus statusCode;
+    @NotNull public final int statusCode;
+    @NotNull
+    public final String defaultMessage;
+    public final String detailMessage;
 
-    public WateryException(HttpStatus statusCode, String message) {
-        super(message);
-        this.statusCode = statusCode;
+    public WateryException(ExceptionCode exceptionCode) {
+        this.statusCode = exceptionCode.getStatusCode();
+        this.defaultMessage = exceptionCode.getMessage();
+        this.detailMessage = "";
+    }
+
+    public WateryException(ExceptionCode exceptionCode, String message) {
+        this.statusCode = exceptionCode.getStatusCode();
+        this.defaultMessage = exceptionCode.getMessage();
+        this.detailMessage = message;
+    }
+
+    public String getMessage() {
+        if (detailMessage != null) {
+            return  "[" + defaultMessage + "] " + detailMessage;
+        }
+        return defaultMessage;
     }
 }

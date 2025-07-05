@@ -31,7 +31,10 @@ public class KakaoOAuthClient {
                 .bodyToMono(KakaoResponse.class)
                 .block();
 
-        assert response != null;
+        if (response == null) {
+            throw new WateryException(ExceptionCode.SERVICE_AVAILABLE);
+        }
+
         return response.id();
     }
 }

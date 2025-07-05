@@ -1,18 +1,22 @@
-package team.gachi.watery.domain;
+package team.gachi.watery.alarm;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
-import team.gachi.watery.domain.common.BaseEntity;
+import team.gachi.watery.common.BaseEntity;
+import team.gachi.watery.user.User;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "push_notification_logs")
+@Table(name = "alarm_log")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class PushNotificationLog extends BaseEntity {
+public class AlarmLog extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,23 +26,22 @@ public class PushNotificationLog extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(nullable = false)
-    @Comment("전송 시간")
-    private LocalDateTime sentAt;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "alarm_id")
+    private Alarm alarm;
 
     @Column(nullable = false)
     @Comment("전송 메시지")
     private String message;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    @Comment("전송 상태")
-    private PushStatus status;
+    @Comment("전송 시간")
+    private LocalDateTime sentAt;
 
     @Comment("에러 메시지")
     private String errorMessage;
 
-    public enum PushStatus {
-        SENT, FAILED, CLICKED, IGNORED
-    }
+    @Comment("실패 사유")
+    private String failureReason;
+
 }

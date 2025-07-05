@@ -1,4 +1,4 @@
-package team.gachi.watery.controller;
+package team.gachi.watery.healthCheck;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

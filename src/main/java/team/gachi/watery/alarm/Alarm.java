@@ -1,17 +1,19 @@
-package team.gachi.watery.domain;
+package team.gachi.watery.alarm;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
-
-import java.time.LocalTime;
+import team.gachi.watery.user.User;
 
 @Entity
-@Table(name = "push_alarms")
+@Table(name = "alam")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class PushAlarm {
+public class Alarm {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,11 +24,7 @@ public class PushAlarm {
     private User user;
 
     @Column(nullable = false)
-    @Comment("알림 시간")
-    private LocalTime alarmTime;
-
-    @Column(nullable = false)
     @Comment("on/off 설정")
     private boolean enabled;
-    
+
 }

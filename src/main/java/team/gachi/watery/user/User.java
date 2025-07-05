@@ -1,4 +1,5 @@
-package team.gachi.watery.domain;
+package team.gachi.watery.user;
+
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -6,60 +7,60 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
-import team.gachi.watery.domain.common.BaseEntity;
-
-import java.time.LocalTime;
+import team.gachi.watery.common.BaseEntity;
+import team.gachi.watery.common.Status;
 
 @Entity
-@Table(name = "user_profiles")
+@Table(name = "users")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class UserProfile extends BaseEntity {
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false, unique = true)
-    private User user;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @Comment("소셜 타입")
+    private SocialType socialType = SocialType.NONE;
+
+    @Column(nullable = false)
+    @Comment("소셜 아이디")
+    private String socialId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @Comment("성별")
     private Gender gender;
 
-    @Column(nullable = false)
-    @Comment("나이")
-    private int age;
+    @Comment("출생연도")
+    private int yearOfBirth;
 
-    @Column(nullable = false)
     @Comment("체중 kg")
-    private float weight;
-
-    @Column(nullable = false)
-    @Comment("키 cm")
-    private float height;
+    private int weight;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @Comment("활동량")
     private ActivityLevel activityLevel;
 
-    @Column(nullable = false)
-    @Comment("기상시간")
-    private LocalTime wakeUpTime;
+    @Comment("일일 목표량")
+    private int dailyGoal;
 
-    @Column(nullable = false)
-    @Comment("취침시간")
-    private LocalTime sleepTime;
+    @Comment("상태")
+    private Status status;
+
+    public enum SocialType {
+        NONE, KAKAO, GOOGLE
+    }
 
     public enum Gender {
         MALE, FEMALE, OTHER
     }
 
     public enum ActivityLevel {
-        LOW, MEDIUM, HIGH
+        LOW, NORMAL, ACTIVE, VERY_ACTIVE
     }
 }

@@ -4,8 +4,8 @@ package team.gachi.watery.auth.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.gachi.watery.auth.dto.SignInRequest;
-import team.gachi.watery.auth.dto.SignInResponse;
+import team.gachi.watery.auth.dto.SignInRequestDto;
+import team.gachi.watery.auth.dto.SignInResponseDto;
 import team.gachi.watery.oauth.OAuthClientResolver;
 import team.gachi.watery.user.domain.Token;
 import team.gachi.watery.user.domain.User;
@@ -21,7 +21,7 @@ public class AuthService {
     private final OAuthClientResolver oAuthClientResolver;
 
     @Transactional
-    public SignInResponse signIn(String socialAccessToken, SignInRequest request) {
+    public SignInResponseDto signIn(String socialAccessToken, SignInRequestDto request) {
         User.Social social = oAuthClientResolver.getSocialData(request.socialType(), socialAccessToken);
         User signedUser = signIn(social, request);
 
@@ -38,10 +38,10 @@ public class AuthService {
                 );
 
         String accessToken = jwtUtil.generateAccessToken(signedUser.getId());
-        return SignInResponse.of(accessToken, signedUser);
+        return SignInResponseDto.of(accessToken, signedUser);
     }
 
-    private User signIn(User.Social social, SignInRequest request) {
+    private User signIn(User.Social social, SignInRequestDto request) {
         return userRepository.findBySocialTypeAndSocialId(social.socialType(), social.socialId())
                 .orElseGet(() -> userRepository.save(request.toDomain(social.socialId())));
     }

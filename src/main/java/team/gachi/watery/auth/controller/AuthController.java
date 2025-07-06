@@ -5,12 +5,12 @@ import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import team.gachi.watery.auth.service.AuthService;
-import team.gachi.watery.auth.dto.SignInRequest;
-import team.gachi.watery.auth.dto.SignInResponse;
+import team.gachi.watery.auth.dto.SignInRequestDto;
+import team.gachi.watery.auth.dto.SignInResponseDto;
 import team.gachi.watery.dto.WateryResponse;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
@@ -20,12 +20,12 @@ public class AuthController {
             description = "소셜서비스 Access Token을 Authorization 헤더에 담아 로그인합니다."
     )
     @PostMapping("/sign-in")
-    public WateryResponse<SignInResponse> signIn(
+    public WateryResponse<SignInResponseDto> signIn(
             @Parameter(hidden = true)
             @RequestHeader("Authorization") String socialAccessToken,
-            @RequestBody SignInRequest request
+            @RequestBody SignInRequestDto request
     ) {
-        SignInResponse response = authService.signIn(socialAccessToken, request);
+        SignInResponseDto response = authService.signIn(socialAccessToken, request);
         return WateryResponse.of(response, "로그인 성공");
     }
 }

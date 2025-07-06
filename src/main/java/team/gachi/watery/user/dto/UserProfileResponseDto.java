@@ -10,7 +10,7 @@ public record UserProfileResponseDto(
         int yearOfBirth,
         int weight,
         User.ActivityLevel activityLevel,
-        int dailyGoal
+        int dailyHydrationGoal
 ) {
     public static UserProfileResponseDto of(User user) {
         return new UserProfileResponseDto(
@@ -20,7 +20,7 @@ public record UserProfileResponseDto(
                 user.getYearOfBirth(),
                 user.getWeight(),
                 user.getActivityLevel(),
-                user.getDailyGoal()
+                user.getDailyHydrationGoal()
         );
     }
 }

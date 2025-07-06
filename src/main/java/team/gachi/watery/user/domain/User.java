@@ -49,8 +49,8 @@ public class User extends BaseEntity {
     @Builder.Default
     private ActivityLevel activityLevel = ActivityLevel.NONE;
 
-    @Comment("일일 목표량")
-    private int dailyGoal;
+    @Comment("일일 수분 섭취 목표량")
+    private int dailyHydrationGoal;
 
     @Comment("상태")
     @Builder.Default

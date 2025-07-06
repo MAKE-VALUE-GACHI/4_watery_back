@@ -88,6 +88,10 @@ public class User extends BaseEntity {
         this.yearOfBirth = yearOfBirth;
     }
 
+    public void updateDailyHydrationGoal(int dailyHydrationGoal) {
+        this.dailyHydrationGoal = dailyHydrationGoal;
+    }
+
     public enum SocialType {
         NONE, KAKAO, GOOGLE
     }

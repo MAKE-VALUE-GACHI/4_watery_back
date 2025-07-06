@@ -28,7 +28,8 @@ public class UserService {
                 requestDto.yearOfBirth()
         );
 
-        // TODO update dailyGoal
+        // TODO 수정 예정
+        user.updateDailyHydrationGoal(2345);
     }
 
     public UserProfileResponseDto getUserProfile(long userId) {

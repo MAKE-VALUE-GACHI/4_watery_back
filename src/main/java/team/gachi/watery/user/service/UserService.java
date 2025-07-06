@@ -9,6 +9,7 @@ import team.gachi.watery.user.domain.User;
 import team.gachi.watery.user.dto.UserProfileRequestDto;
 import team.gachi.watery.user.dto.UserProfileResponseDto;
 import team.gachi.watery.user.repository.UserRepository;
+import team.gachi.watery.util.HydrationCalculator;
 
 @Service
 @RequiredArgsConstructor
@@ -28,8 +29,9 @@ public class UserService {
                 requestDto.yearOfBirth()
         );
 
-        // TODO 수정 예정
-        user.updateDailyHydrationGoal(2345);
+        int dailyHydrationGoal = HydrationCalculator.calculate(requestDto.weight(), requestDto.activityLevel());
+
+        user.updateDailyHydrationGoal(dailyHydrationGoal);
     }
 
     public UserProfileResponseDto getUserProfile(long userId) {

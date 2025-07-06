@@ -1,4 +1,4 @@
-package team.gachi.watery.auth;
+package team.gachi.watery.auth.service;
 
 
 import lombok.RequiredArgsConstructor;
@@ -7,8 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import team.gachi.watery.auth.dto.SignInRequest;
 import team.gachi.watery.auth.dto.SignInResponse;
 import team.gachi.watery.oauth.OAuthClientResolver;
-import team.gachi.watery.user.User;
-import team.gachi.watery.user.UserRepository;
+import team.gachi.watery.user.domain.Token;
+import team.gachi.watery.user.domain.User;
+import team.gachi.watery.user.repository.UserRepository;
 import team.gachi.watery.util.JwtUtil;
 
 @Service
@@ -23,9 +24,18 @@ public class AuthService {
     public SignInResponse signIn(String socialAccessToken, SignInRequest request) {
         User.Social social = oAuthClientResolver.getSocialData(request.socialType(), socialAccessToken);
         User signedUser = signIn(social, request);
-        signedUser.updateTokenInLogin(
-                jwtUtil.generateRefreshToken(signedUser.getId()),
-                request.fcmToken());
+
+        String refreshToken = jwtUtil.generateRefreshToken(signedUser.getId());
+        String pushToken = request.pushToken();
+
+        signedUser.getToken()
+                .ifPresentOrElse(
+                        token -> token.update(refreshToken, pushToken),
+                        () -> {
+                            Token newToken = Token.of(signedUser, refreshToken, pushToken);
+                            signedUser.setToken(newToken);
+                        }
+                );
 
         String accessToken = jwtUtil.generateAccessToken(signedUser.getId());
         return SignInResponse.of(accessToken, signedUser);

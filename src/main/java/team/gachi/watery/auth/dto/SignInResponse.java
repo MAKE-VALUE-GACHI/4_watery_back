@@ -3,7 +3,7 @@ package team.gachi.watery.auth.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.Builder;
-import team.gachi.watery.user.User;
+import team.gachi.watery.user.domain.User;
 
 @Builder(access = AccessLevel.PRIVATE)
 public record SignInResponse(

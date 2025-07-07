@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
-import team.gachi.watery.user.User;
+import team.gachi.watery.user.domain.User;
 
 @Entity
 @Table(name = "alarm")

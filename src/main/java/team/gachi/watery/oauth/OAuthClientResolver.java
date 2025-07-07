@@ -6,7 +6,7 @@ import team.gachi.watery.exception.ExceptionCode;
 import team.gachi.watery.exception.WateryException;
 import team.gachi.watery.oauth.google.GoogleOAuthClient;
 import team.gachi.watery.oauth.kakao.KakaoOAuthClient;
-import team.gachi.watery.user.User;
+import team.gachi.watery.user.domain.User;
 
 @Component
 @RequiredArgsConstructor

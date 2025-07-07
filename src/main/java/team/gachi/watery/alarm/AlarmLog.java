@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 import team.gachi.watery.common.BaseEntity;
-import team.gachi.watery.user.User;
+import team.gachi.watery.user.domain.User;
 
 import java.time.LocalDateTime;
 

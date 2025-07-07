@@ -24,4 +24,11 @@ public record WateryResponse<T>(
                 .message(message)
                 .build();
     }
+
+    public static <T> WateryResponse<T> of(T data) {
+        return WateryResponse.<T>builder()
+                .success(true)
+                .data(data)
+                .build();
+    }
 }

@@ -3,10 +3,10 @@ package team.gachi.watery.auth.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AccessLevel;
 import lombok.Builder;
-import team.gachi.watery.user.User;
+import team.gachi.watery.user.domain.User;
 
 @Builder(access = AccessLevel.PRIVATE)
-public record SignInResponse(
+public record SignInResponseDto(
         @Schema(description = "WATERY JWT 액세스 토큰", example = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...")
         String accessToken,
 
@@ -14,8 +14,8 @@ public record SignInResponse(
         String refreshToken
 ) {
 
-    public static SignInResponse of(String accessToken, User user) {
-        return SignInResponse.builder()
+    public static SignInResponseDto of(String accessToken, User user) {
+        return SignInResponseDto.builder()
                 .accessToken(accessToken)
                 .refreshToken(user.getRefreshToken())
                 .build();

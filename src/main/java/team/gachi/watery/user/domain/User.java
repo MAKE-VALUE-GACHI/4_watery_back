@@ -1,4 +1,4 @@
-package team.gachi.watery.user;
+package team.gachi.watery.user.domain;
 
 
 import jakarta.persistence.*;
@@ -6,6 +6,8 @@ import lombok.*;
 import org.hibernate.annotations.Comment;
 import team.gachi.watery.common.BaseEntity;
 import team.gachi.watery.common.Status;
+
+import java.util.Optional;
 
 @Entity
 @Table(name = "users")
@@ -22,6 +24,7 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @Comment("소셜 타입")
+    @Builder.Default
     private SocialType socialType = SocialType.NONE;
 
     @Column(nullable = false)
@@ -31,7 +34,8 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @Comment("성별")
-    private Gender gender;
+    @Builder.Default
+    private Gender gender = Gender.NONE;
 
     @Comment("출생연도")
     private int yearOfBirth;
@@ -42,13 +46,20 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @Comment("활동량")
-    private ActivityLevel activityLevel;
+    @Builder.Default
+    private ActivityLevel activityLevel = ActivityLevel.NONE;
 
-    @Comment("일일 목표량")
-    private int dailyGoal;
+    @Comment("일일 수분 섭취 목표량")
+    private int dailyHydrationGoal;
 
     @Comment("상태")
+    @Builder.Default
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Status status = Status.ACTIVE;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Token token;
 
     public static User of(SocialType socialType, String socialId) {
         return User.builder()
@@ -57,14 +68,28 @@ public class User extends BaseEntity {
                 .build();
     }
 
-    public String getRefreshToken() {
-        // TODO 수정예정
-        return null;
+
+    public Optional<Token> getToken() {
+        return Optional.ofNullable(token);
     }
 
-    public void updateTokenInLogin(String refreshToken, String fcmToken) {
-        // TODO 수정예정
+    public void setToken(Token token) {
+        this.token = token;
+    }
 
+    public String getRefreshToken() {
+        return this.token == null ? null : this.token.getRefreshToken();
+    }
+
+    public void updateProfile(Gender gender, ActivityLevel activityLevel, int weight, int yearOfBirth) {
+        this.gender = gender;
+        this.activityLevel = activityLevel;
+        this.weight = weight;
+        this.yearOfBirth = yearOfBirth;
+    }
+
+    public void updateDailyHydrationGoal(int dailyHydrationGoal) {
+        this.dailyHydrationGoal = dailyHydrationGoal;
     }
 
     public enum SocialType {
@@ -72,11 +97,11 @@ public class User extends BaseEntity {
     }
 
     public enum Gender {
-        MALE, FEMALE, OTHER
+        NONE, MALE, FEMALE, OTHER
     }
 
     public enum ActivityLevel {
-        LOW, NORMAL, ACTIVE, VERY_ACTIVE
+        NONE, LOW, NORMAL, ACTIVE, VERY_ACTIVE
     }
 
 

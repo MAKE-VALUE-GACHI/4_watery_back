@@ -1,4 +1,4 @@
-package team.gachi.watery.drink;
+package team.gachi.watery.drink.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

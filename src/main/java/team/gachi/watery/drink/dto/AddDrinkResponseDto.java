@@ -5,13 +5,13 @@ import lombok.AccessLevel;
 import lombok.Builder;
 
 @Builder(access = AccessLevel.PRIVATE)
-public record AddDrinkResponse(
+public record AddDrinkResponseDto(
         @Schema(description = "음료 ID", example = "1")
         Long id
 ) {
 
-    public static AddDrinkResponse of(Long id) {
-        return AddDrinkResponse.builder()
+    public static AddDrinkResponseDto of(Long id) {
+        return AddDrinkResponseDto.builder()
                 .id(id)
                 .build();
     }

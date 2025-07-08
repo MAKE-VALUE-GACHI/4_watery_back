@@ -1,4 +1,4 @@
-package team.gachi.watery.drink.model;
+package team.gachi.watery.drink.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 import team.gachi.watery.common.BaseEntity;
 import team.gachi.watery.common.Status;
-import team.gachi.watery.user.User;
+import team.gachi.watery.user.domain.User;
 
 @Entity
 @Table(name = "drink")

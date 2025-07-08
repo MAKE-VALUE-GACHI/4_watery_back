@@ -17,7 +17,9 @@ public enum ExceptionCode {
     DRINK_NOT_FOUND(404, "음료 정보를 찾을 수 없습니다."),
 
     // --- 400 Bad Request ---
+    INVALID_INPUT(400, "입력값이 올바르지 않습니다."),
     INVALID_ENUM_TYPE(400, "유효하지 않은 Enum 값"),
+    DRINK_NAME_ALREADY_EXISTS(400, "이미 존재하는 음료 이름입니다."),
 
     // ===== 5xx =====
     SERVICE_AVAILABLE(503, "서비스에 접근할 수 없음"),

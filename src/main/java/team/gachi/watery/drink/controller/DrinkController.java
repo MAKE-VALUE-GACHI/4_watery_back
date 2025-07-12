@@ -3,10 +3,12 @@ package team.gachi.watery.drink.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import team.gachi.watery.drink.dto.AddDrinkRequestDto;
 import team.gachi.watery.drink.dto.AddDrinkResponseDto;
@@ -15,9 +17,11 @@ import team.gachi.watery.drink.service.DrinkService;
 import team.gachi.watery.dto.WateryResponse;
 
 import java.security.Principal;
+import java.time.LocalDate;
 
 @Tag(name = "음료", description = "음료 관련 API")
 @RequiredArgsConstructor
+@Valid
 @RestController("/api/v1/drinks")
 public class DrinkController {
     private final DrinkService drinkService;
@@ -40,9 +44,13 @@ public class DrinkController {
     @GetMapping
     public WateryResponse<DrinksResponseDto> getDrinks(
             @Parameter(hidden = true)
-            Principal principal
+            Principal principal,
+
+            @RequestParam(required = false)
+            @Parameter(description = "기준 날짜 (없으면 당일 기준)", example = "2025-07-01")
+            LocalDate baseDate
     ) {
-        DrinksResponseDto response = drinkService.getDrinks(Long.valueOf(principal.getName()));
+        DrinksResponseDto response = drinkService.getDrinks(Long.valueOf(principal.getName()), baseDate);
 
         return WateryResponse.of(response);
     }

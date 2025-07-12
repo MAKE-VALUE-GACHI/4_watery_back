@@ -36,7 +36,7 @@ public class DrinkHistory extends BaseEntity {
 
     @Column(nullable = false)
     @Comment("섭취 시간")
-    private LocalDateTime drinkAT;
+    private LocalDateTime drinkAt;
 
     /**
      * @return 등록된 음료가 아닌 수동 입력 음료인지 여부

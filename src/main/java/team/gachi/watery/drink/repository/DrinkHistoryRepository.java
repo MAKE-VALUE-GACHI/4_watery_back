@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import team.gachi.watery.drink.domain.DrinkHistory;
 
 @Repository
-public interface DrinkHistoryRepository extends JpaRepository<DrinkHistory, Long> {
+public interface DrinkHistoryRepository extends JpaRepository<DrinkHistory, Long>, DrinkHistoryCustomRepository {
 }

@@ -3,6 +3,7 @@ package team.gachi.watery.drink.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.gachi.watery.drink.domain.DrinkHistory;
 import team.gachi.watery.drink.dto.AddDrinkRequestDto;
 import team.gachi.watery.drink.dto.AddDrinkResponseDto;
 import team.gachi.watery.drink.dto.DrinkDto;
@@ -18,6 +19,7 @@ import team.gachi.watery.user.domain.User;
 import team.gachi.watery.user.repository.UserRepository;
 import team.gachi.watery.util.StringUtil;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -69,18 +71,32 @@ public class DrinkService {
         return AddDrinkResponseDto.of(savedDrink.getId());
     }
 
-    public DrinksResponseDto getDrinks(Long userId) {
+    public DrinksResponseDto getDrinks(Long userId, LocalDate baseDate) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new WateryException(ExceptionCode.USER_NOT_FOUND));
 
         List<Drink> drinks = drinkRepository.findAllByUserId(user.getId());
 
+        int totalHydrationAmount = 0;
+
+        LocalDate startDate = baseDate != null ? baseDate : LocalDate.now();
+        LocalDate endDate = baseDate != null ? baseDate : LocalDate.now();
+
         List<DrinkDto> drinkDtos = drinks.stream()
-                .map(DrinkDto::of)
+                .map(drink -> {
+                    int totalDrinkAmount = drinkHistoryRepository.sumTotalDrinkAmountBy(
+                            drink.getId(), user.getId(), startDate, endDate);
+
+                    totalDrinkAmount += drink.getIncludesDailyHydrationGoal() ? totalDrinkAmount : 0;
+
+                    return DrinkDto.of(drink, totalDrinkAmount);
+                })
                 .toList();
+
 
         return DrinksResponseDto.of(
                 user.getDailyHydrationGoal(),
+                totalHydrationAmount,
                 drinkDtos
         );
     }

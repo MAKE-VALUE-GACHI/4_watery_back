@@ -6,11 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import team.gachi.watery.drink.dto.AddDrinkRequestDto;
 import team.gachi.watery.drink.dto.AddDrinkResponseDto;
 import team.gachi.watery.drink.dto.DrinksResponseDto;
@@ -23,7 +19,8 @@ import java.time.LocalDate;
 
 @Tag(name = "음료", description = "음료 관련 API")
 @RequiredArgsConstructor
-@RestController("/api/v1/drinks")
+@RestController
+@RequestMapping("/api/v1/drinks")
 public class DrinkController {
     private final DrinkService drinkService;
 

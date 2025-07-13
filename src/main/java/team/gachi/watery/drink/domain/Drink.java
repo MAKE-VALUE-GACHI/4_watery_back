@@ -63,4 +63,8 @@ public class Drink extends BaseEntity {
                 .status(Status.ACTIVE)
                 .build();
     }
+
+    public boolean isMyDrink(Long userId) {
+        return this.user.getId().equals(userId);
+    }
 }

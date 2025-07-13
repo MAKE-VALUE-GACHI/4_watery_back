@@ -11,6 +11,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -62,5 +64,11 @@ public class Drink extends BaseEntity {
                 .includesDailyHydrationGoal(includesDailyHydrationGoal)
                 .status(Status.ACTIVE)
                 .build();
+    }
+
+    public void update(String name, ColorTemplate colorTemplate, Boolean includesDailyHydrationGoal) {
+        this.name = name;
+        this.colorTemplate = colorTemplate;
+        this.includesDailyHydrationGoal = includesDailyHydrationGoal;
     }
 }

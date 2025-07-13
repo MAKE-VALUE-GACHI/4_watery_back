@@ -4,14 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team.gachi.watery.common.Status;
-import team.gachi.watery.drink.domain.DrinkHistory;
+import team.gachi.watery.drink.domain.ColorTemplate;
+import team.gachi.watery.drink.domain.Drink;
 import team.gachi.watery.drink.dto.AddDrinkRequestDto;
 import team.gachi.watery.drink.dto.AddDrinkResponseDto;
 import team.gachi.watery.drink.dto.DrinkDto;
 import team.gachi.watery.drink.dto.DrinksResponseDto;
-import team.gachi.watery.drink.domain.ColorTemplate;
-import team.gachi.watery.drink.domain.Drink;
 import team.gachi.watery.drink.dto.HydrationAmountResponseDto;
+import team.gachi.watery.drink.dto.UpdateDrinkRequestDto;
 import team.gachi.watery.drink.repository.ColorTemplateRepository;
 import team.gachi.watery.drink.repository.DrinkHistoryRepository;
 import team.gachi.watery.drink.repository.DrinkRepository;
@@ -88,7 +88,6 @@ public class DrinkService {
                 })
                 .toList();
 
-
         return DrinksResponseDto.of(drinkDtos);
     }
 
@@ -97,11 +96,29 @@ public class DrinkService {
                 .orElseThrow(() -> new WateryException(ExceptionCode.USER_NOT_FOUND));
 
         int totalHydrationAmount = drinkHistoryRepository.sumTotalHydrationAmount(
-                            user.getId(), baseDate);
+                user.getId(), baseDate);
 
         return HydrationAmountResponseDto.of(
                 user.getDailyHydrationGoal(),
                 totalHydrationAmount
+        );
+    }
+
+    @Transactional
+    public void updateDrink(Long userId, Long drinkId, UpdateDrinkRequestDto request) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new WateryException(ExceptionCode.USER_NOT_FOUND));
+
+        Drink drink = drinkRepository.findByIdAndUserId(drinkId, user.getId())
+                .orElseThrow(() -> new WateryException(ExceptionCode.DRINK_NOT_FOUND));
+
+        ColorTemplate colorTemplate = colorTemplateRepository.findById(request.colorTemplateId())
+                .orElseThrow(() -> new WateryException(ExceptionCode.COLOR_TEMPLATE_NOT_FOUND));
+
+        drink.update(
+                request.name(),
+                colorTemplate,
+                request.includesDailyHydrationGoal()
         );
     }
 }

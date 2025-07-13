@@ -7,8 +7,6 @@ import team.gachi.watery.drink.domain.Drink;
 import java.util.List;
 
 @Repository
-public interface DrinkRepository extends JpaRepository<Drink, Long> {
-    List<Drink> findAllByUserId(Long userId);
-
+public interface DrinkRepository extends JpaRepository<Drink, Long>, DrinkCustomRepository {
     boolean existsByUserIdAndName(Long userId, String name);
 }

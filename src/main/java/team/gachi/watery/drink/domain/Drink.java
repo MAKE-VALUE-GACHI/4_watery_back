@@ -71,4 +71,8 @@ public class Drink extends BaseEntity {
         this.colorTemplate = colorTemplate;
         this.includesDailyHydrationGoal = includesDailyHydrationGoal;
     }
+
+    public void delete() {
+        this.status = Status.DELETED;
+    }
 }

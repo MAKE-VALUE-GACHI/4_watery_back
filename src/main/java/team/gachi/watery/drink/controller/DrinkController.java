@@ -90,4 +90,17 @@ public class DrinkController {
 
         return WateryResponse.of("ok");
     }
+
+    @Operation(summary = "음료 삭제", description = "음료를 삭제합니다.")
+    @DeleteMapping("/{drinkId}")
+    public WateryResponse<?> deleteDrink(
+            @Parameter(hidden = true)
+            Principal principal,
+
+            @PathVariable Long drinkId
+    ) {
+        drinkService.deleteDrink(Long.valueOf(principal.getName()), drinkId);
+
+        return WateryResponse.of("ok");
+    }
 }

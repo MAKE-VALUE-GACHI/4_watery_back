@@ -121,4 +121,14 @@ public class DrinkService {
                 request.includesDailyHydrationGoal()
         );
     }
+
+    public void deleteDrink(Long userId, Long drinkId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new WateryException(ExceptionCode.USER_NOT_FOUND));
+
+        Drink drink = drinkRepository.findByIdAndUserId(drinkId, user.getId())
+                .orElseThrow(() -> new WateryException(ExceptionCode.DRINK_NOT_FOUND));
+
+        drink.delete();
+    }
 }

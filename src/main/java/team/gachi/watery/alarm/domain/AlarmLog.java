@@ -1,10 +1,7 @@
-package team.gachi.watery.alarm;
+package team.gachi.watery.alarm.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Comment;
 import team.gachi.watery.common.BaseEntity;
 import team.gachi.watery.user.domain.User;
@@ -16,6 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder(access = AccessLevel.PRIVATE)
 public class AlarmLog extends BaseEntity {
 
     @Id
@@ -31,8 +29,12 @@ public class AlarmLog extends BaseEntity {
     private Alarm alarm;
 
     @Column(nullable = false)
-    @Comment("전송 메시지")
-    private String message;
+    @Comment("전송 타이틀")
+    private String title;
+
+    @Column(nullable = false)
+    @Comment("전송 바디")
+    private String body;
 
     @Column(nullable = false)
     @Comment("전송 시간")
@@ -44,4 +46,15 @@ public class AlarmLog extends BaseEntity {
     @Comment("실패 사유")
     private String failureReason;
 
+    public static AlarmLog of(User user, Alarm alarm, String title, String body, LocalDateTime sentAt, String errorMessage, String failureReason) {
+        return AlarmLog.builder()
+                .user(user)
+                .alarm(alarm)
+                .title(title)
+                .body(body)
+                .sentAt(sentAt)
+                .errorMessage(errorMessage)
+                .failureReason(failureReason)
+                .build();
+    }
 }

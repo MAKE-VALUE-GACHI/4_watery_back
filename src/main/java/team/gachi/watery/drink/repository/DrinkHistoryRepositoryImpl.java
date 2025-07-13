@@ -24,7 +24,8 @@ public class DrinkHistoryRepositoryImpl implements DrinkHistoryCustomRepository 
                 .where(
                         drinkHistory.drink.id.eq(drinkId),
                         drinkHistory.user.id.eq(userId),
-                        drinkHistory.drinkAt.between(baseDate.atStartOfDay(), baseDate.atTime(23, 59, 59))
+                        drinkHistory.drinkAt.goe(baseDate.atStartOfDay()),
+                        drinkHistory.drinkAt.lt(baseDate.plusDays(1).atStartOfDay())
                 )
                 .fetchOne();
 
@@ -44,7 +45,8 @@ public class DrinkHistoryRepositoryImpl implements DrinkHistoryCustomRepository 
                         .and(drink.includesDailyHydrationGoal))
                 .where(
                         drinkHistory.user.id.eq(userId),
-                        drinkHistory.drinkAt.between(baseDate.atStartOfDay(), baseDate.atTime(23, 59, 59))
+                        drinkHistory.drinkAt.goe(baseDate.atStartOfDay()),
+                        drinkHistory.drinkAt.lt(baseDate.plusDays(1).atStartOfDay())
                 )
                 .fetchOne();
 

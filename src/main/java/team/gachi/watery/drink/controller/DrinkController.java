@@ -23,7 +23,6 @@ import java.time.LocalDate;
 
 @Tag(name = "음료", description = "음료 관련 API")
 @RequiredArgsConstructor
-@Valid
 @RestController("/api/v1/drinks")
 public class DrinkController {
     private final DrinkService drinkService;
@@ -34,6 +33,7 @@ public class DrinkController {
             @Parameter(hidden = true)
             Principal principal,
 
+            @Valid
             @RequestBody
             AddDrinkRequestDto request
     ) {

@@ -4,6 +4,7 @@ package team.gachi.watery.auth.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import team.gachi.watery.alarm.domain.Alarm;
 import team.gachi.watery.auth.dto.SignInRequestDto;
 import team.gachi.watery.auth.dto.SignInResponseDto;
 import team.gachi.watery.oauth.OAuthClientResolver;
@@ -11,6 +12,8 @@ import team.gachi.watery.user.domain.Token;
 import team.gachi.watery.user.domain.User;
 import team.gachi.watery.user.repository.UserRepository;
 import team.gachi.watery.util.JwtUtil;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -28,14 +31,17 @@ public class AuthService {
         String refreshToken = jwtUtil.generateRefreshToken(signedUser.getId());
         String pushToken = request.pushToken();
 
-        signedUser.getToken()
-                .ifPresentOrElse(
-                        token -> token.update(refreshToken, pushToken),
-                        () -> {
-                            Token newToken = Token.of(signedUser, refreshToken, pushToken);
-                            signedUser.setToken(newToken);
-                        }
-                );
+        Token token = signedUser.getToken();
+
+        if (token != null) {
+            token.update(refreshToken, pushToken);
+        } else {
+            Token newToken = Token.of(signedUser, refreshToken, pushToken);
+            Alarm alarm = Alarm.of(signedUser);
+
+            signedUser.setToken(newToken);
+            signedUser.setAlarms(List.of(alarm));
+        }
 
         String accessToken = jwtUtil.generateAccessToken(signedUser.getId());
         return SignInResponseDto.of(accessToken, signedUser);

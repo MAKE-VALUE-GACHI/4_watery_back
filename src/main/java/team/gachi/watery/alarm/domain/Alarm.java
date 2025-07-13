@@ -1,10 +1,7 @@
-package team.gachi.watery.alarm;
+package team.gachi.watery.alarm.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Comment;
 import team.gachi.watery.user.domain.User;
 
@@ -13,6 +10,7 @@ import team.gachi.watery.user.domain.User;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder(access = AccessLevel.PRIVATE)
 public class Alarm {
 
     @Id
@@ -27,4 +25,10 @@ public class Alarm {
     @Comment("on/off 설정")
     private boolean enabled;
 
+    public static Alarm of(User user) {
+        return Alarm.builder()
+                .user(user)
+                .enabled(true)
+                .build();
+    }
 }

@@ -9,6 +9,7 @@ public enum ExceptionCode {
 
     // ===== 4xx =====
     UNAUTHORIZED(401, "유효하지 않은 토큰"),
+    FORBIDDEN(403, "접근 권한이 없습니다."),
 
     // --- 404 Not Found ---
     NOT_FOUND(404, "존재하지 않음"),

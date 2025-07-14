@@ -34,7 +34,7 @@ public class DrinkHistoryService {
             throw new WateryException(ExceptionCode.FORBIDDEN);
         }
 
-        DrinkHistory drinkHistory = DrinkHistory.CreateDrinkHistory(user, drink,
+        DrinkHistory drinkHistory = DrinkHistory.createDrinkHistory(user, drink,
                 request.amount(), request.drinkAt());
 
         drinkHistoryRepository.save(drinkHistory);

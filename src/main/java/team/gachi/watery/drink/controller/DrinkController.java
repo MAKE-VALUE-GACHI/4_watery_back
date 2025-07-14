@@ -11,6 +11,7 @@ import team.gachi.watery.drink.dto.AddDrinkRequestDto;
 import team.gachi.watery.drink.dto.AddDrinkResponseDto;
 import team.gachi.watery.drink.dto.DrinksResponseDto;
 import team.gachi.watery.drink.dto.HydrationAmountResponseDto;
+import team.gachi.watery.drink.dto.UpdateDrinkRequestDto;
 import team.gachi.watery.drink.service.DrinkService;
 import team.gachi.watery.dto.WateryResponse;
 
@@ -72,5 +73,34 @@ public class DrinkController {
         HydrationAmountResponseDto response = drinkService.getHydrationAmount(Long.valueOf(principal.getName()), baseDate);
 
         return WateryResponse.of(response);
+    }
+
+    @Operation(summary = "음료 수정", description = "음료를 수정합니다.")
+    @PutMapping("/{drinkId}")
+    public WateryResponse<?> updateDrink(
+            @Parameter(hidden = true)
+            Principal principal,
+
+            @PathVariable Long drinkId,
+
+            @Valid
+            @RequestBody UpdateDrinkRequestDto request
+    ) {
+        drinkService.updateDrink(Long.valueOf(principal.getName()), drinkId, request);
+
+        return WateryResponse.of("ok");
+    }
+
+    @Operation(summary = "음료 삭제", description = "음료를 삭제합니다.")
+    @DeleteMapping("/{drinkId}")
+    public WateryResponse<?> deleteDrink(
+            @Parameter(hidden = true)
+            Principal principal,
+
+            @PathVariable Long drinkId
+    ) {
+        drinkService.deleteDrink(Long.valueOf(principal.getName()), drinkId);
+
+        return WateryResponse.of("ok");
     }
 }

@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import team.gachi.watery.common.BaseEntity;
 import team.gachi.watery.common.StringListConverter;
 
+import java.util.List;
+
 
 @Entity
 @Table(name = "color_template")
@@ -20,5 +22,5 @@ public class ColorTemplate extends BaseEntity {
     private Long id;
 
     @Convert(converter = StringListConverter.class)
-    private String colors;
+    private List<String> colors;
 }

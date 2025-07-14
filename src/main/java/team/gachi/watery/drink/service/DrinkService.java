@@ -122,6 +122,7 @@ public class DrinkService {
         );
     }
 
+    @Transactional
     public void deleteDrink(Long userId, Long drinkId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new WateryException(ExceptionCode.USER_NOT_FOUND));

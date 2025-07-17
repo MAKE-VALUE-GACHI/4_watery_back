@@ -16,6 +16,7 @@ public enum ExceptionCode {
     USER_NOT_FOUND(404, "사용자를 찾을 수 없습니다."),
     COLOR_TEMPLATE_NOT_FOUND(404, "색상 템플릿을 찾을 수 없습니다."),
     DRINK_NOT_FOUND(404, "음료 정보를 찾을 수 없습니다."),
+    DRINK_HISTORY_NOT_FOUND(404, "음료 기록을 찾을 수 없습니다."),
 
     // --- 400 Bad Request ---
     INVALID_INPUT(400, "입력값이 올바르지 않습니다."),

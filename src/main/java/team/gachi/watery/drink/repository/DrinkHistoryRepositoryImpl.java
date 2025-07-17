@@ -8,6 +8,7 @@ import team.gachi.watery.drink.domain.QDrink;
 import team.gachi.watery.drink.domain.QDrinkHistory;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -51,5 +52,21 @@ public class DrinkHistoryRepositoryImpl implements DrinkHistoryCustomRepository 
                 .fetchOne();
 
         return totalAmount != null ? totalAmount : 0;
+    }
+
+    public List<DrinkHistory> findByUserIdAndDateRange(Long userId, LocalDate startDate, LocalDate endDate) {
+        QDrinkHistory drinkHistory = QDrinkHistory.drinkHistory;
+        QDrink drink = QDrink.drink;
+        return queryFactory
+                .selectFrom(drinkHistory)
+                .innerJoin(drink)
+                .on(drink.id.eq(drinkHistory.drink.id)
+                        .and(drink.includesDailyHydrationGoal))
+                .where(
+                        drinkHistory.user.id.eq(userId),
+                        drinkHistory.drinkAt.goe(startDate.atStartOfDay()),
+                        drinkHistory.drinkAt.lt(endDate.plusDays(1).atStartOfDay())
+                )
+                .fetch();
     }
 }

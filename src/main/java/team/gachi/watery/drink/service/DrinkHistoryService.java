@@ -48,6 +48,8 @@ public class DrinkHistoryService {
     }
 
     public WeeklyReportResponseDto getDrinkHistory(Long userId, LocalDate endDate) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new WateryException(ExceptionCode.USER_NOT_FOUND));
 
         LocalDate startDate = endDate.minusDays(7);
         List<DrinkHistory> drinkHistories = drinkHistoryRepository.findByUserIdAndDateRange(userId, startDate, endDate);
@@ -73,5 +75,20 @@ public class DrinkHistoryService {
                 new WeeklyReportResponseDto.DateRange(startDate, endDate),
                 dailyConsumptions
         );
+    }
+
+    @Transactional
+    public void deleteDrinkHistory(Long userId, Long drinkHistoryId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new WateryException(ExceptionCode.USER_NOT_FOUND));
+
+        DrinkHistory drinkHistory = drinkHistoryRepository.findById(drinkHistoryId)
+                .orElseThrow(() -> new WateryException(ExceptionCode.DRINK_HISTORY_NOT_FOUND));
+
+        if (drinkHistory.getUser().equals(user)) {
+            throw new WateryException(ExceptionCode.FORBIDDEN);
+        }
+
+        drinkHistoryRepository.delete(drinkHistory);
     }
 }

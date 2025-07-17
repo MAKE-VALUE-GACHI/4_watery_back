@@ -2,6 +2,7 @@ package team.gachi.watery.drink.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -52,5 +53,20 @@ public class DrinkHistoryController {
     ) {
         WeeklyReportResponseDto result = drinkHistoryService.getDrinkHistory(Long.valueOf(principal.getName()), baseDate);
         return WateryResponse.of(result);
+    }
+
+
+    @Operation(summary = "음료 섭취 기록 삭제", description = "음료 섭취 기록을 삭제합니다.")
+    @DeleteMapping("/{drinkHistoryId}")
+    public WateryResponse<?> addDrinkHistory(
+            @Parameter(hidden = true)
+            Principal principal,
+
+            @Schema(description = "음료 기록 ID", example = "1")
+            @PathVariable Long drinkHistoryId
+    ) {
+        drinkHistoryService.deleteDrinkHistory(Long.valueOf(principal.getName()), drinkHistoryId);
+
+        return WateryResponse.of("ok");
     }
 }

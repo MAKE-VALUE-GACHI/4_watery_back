@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import team.gachi.watery.drink.dto.AddDrinkHistoryRequestDto;
+import team.gachi.watery.drink.dto.DailyDrinkHistoriesResponseDto;
 import team.gachi.watery.drink.dto.WeeklyReportResponseDto;
 import team.gachi.watery.drink.service.DrinkHistoryService;
 import team.gachi.watery.dto.WateryResponse;
@@ -35,6 +36,26 @@ public class DrinkHistoryController {
         drinkHistoryService.addDrinkHistory(Long.valueOf(principal.getName()), request);
 
         return WateryResponse.of("ok");
+    }
+
+    @Operation(summary = "일일 음료 섭취 기록 조회", description = "일일 음료 섭취 기록을 조회합니다.")
+    @GetMapping("/daily")
+    public WateryResponse<DailyDrinkHistoriesResponseDto> getDailyDrinkHistories(
+            @Parameter(hidden = true)
+            Principal principal,
+
+            @Parameter(description = "음료 ID (음료 ID가 없으면 전체 음료 섭취 기록 조회)", example = "1")
+            @RequestParam("drinkId")
+            Long drinkId,
+
+            @Parameter(description = "기준 날짜", example = "2024-07-16")
+            @RequestParam("baseDate")
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate baseDate
+    ) {
+        DailyDrinkHistoriesResponseDto result =
+                drinkHistoryService.getDailyDrinkHistories(Long.valueOf(principal.getName()), drinkId, baseDate);
+        return WateryResponse.of(result);
     }
 
     @Operation(summary = "음료 섭취 기록 1주일 조회", description = "음료 섭취 기록을 조회합니다.")

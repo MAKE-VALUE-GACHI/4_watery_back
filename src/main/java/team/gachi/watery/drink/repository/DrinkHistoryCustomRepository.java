@@ -12,4 +12,6 @@ public interface DrinkHistoryCustomRepository {
     int sumTotalHydrationAmount(Long userId, LocalDate baseDate);
 
     List<DrinkHistory> findByUserIdAndDateRange(Long userId, LocalDate startDate, LocalDate endDate);
+
+    List<DrinkHistory> findBy(Long userId, Long drinkId, LocalDate startDate, LocalDate endDate);
 }

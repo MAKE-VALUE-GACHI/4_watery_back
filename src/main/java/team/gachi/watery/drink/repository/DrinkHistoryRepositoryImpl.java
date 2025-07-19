@@ -69,4 +69,17 @@ public class DrinkHistoryRepositoryImpl implements DrinkHistoryCustomRepository 
                 )
                 .fetch();
     }
+
+    public List<DrinkHistory> findBy(Long userId, Long drinkId, LocalDate startDate, LocalDate endDate) {
+        QDrinkHistory drinkHistory = QDrinkHistory.drinkHistory;
+        return queryFactory
+                .selectFrom(drinkHistory)
+                .where(
+                        drinkHistory.user.id.eq(userId),
+                        drinkId != null ? drinkHistory.drink.id.eq(drinkId) : null,
+                        drinkHistory.drinkAt.goe(startDate.atStartOfDay()),
+                        drinkHistory.drinkAt.lt(endDate.plusDays(1).atStartOfDay())
+                )
+                .fetch();
+    }
 }

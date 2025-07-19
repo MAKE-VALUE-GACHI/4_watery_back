@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import team.gachi.watery.drink.domain.Drink;
 import team.gachi.watery.drink.domain.DrinkHistory;
 import team.gachi.watery.drink.dto.AddDrinkHistoryRequestDto;
+import team.gachi.watery.drink.dto.DailyDrinkHistoriesResponseDto;
+import team.gachi.watery.drink.dto.DrinkHistoryDto;
 import team.gachi.watery.drink.dto.WeeklyReportResponseDto;
 import team.gachi.watery.drink.repository.DrinkHistoryRepository;
 import team.gachi.watery.drink.repository.DrinkRepository;
@@ -32,7 +34,7 @@ public class DrinkHistoryService {
     @Transactional
     public void addDrinkHistory(Long userId, AddDrinkHistoryRequestDto request) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new WateryException(ExceptionCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new WateryException(ExceptionCode.FORBIDDEN));
 
         Drink drink = drinkRepository.findById(request.drinkId())
                 .orElseThrow(() -> new WateryException(ExceptionCode.DRINK_NOT_FOUND));
@@ -47,9 +49,33 @@ public class DrinkHistoryService {
         drinkHistoryRepository.save(drinkHistory);
     }
 
+    public DailyDrinkHistoriesResponseDto getDailyDrinkHistories(Long userId, Long drinkId, LocalDate baseDate) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new WateryException(ExceptionCode.FORBIDDEN));
+
+        if (drinkId != null) {
+            Drink drink = drinkRepository.findById(drinkId)
+                    .orElseThrow(() -> new WateryException(ExceptionCode.DRINK_NOT_FOUND));
+
+            if (!drink.isMyDrink(userId)) {
+                throw new WateryException(ExceptionCode.FORBIDDEN);
+            }
+        }
+
+        List<DrinkHistory> drinkHistories = drinkHistoryRepository.findBy(userId, drinkId, baseDate, baseDate);
+
+        List<DrinkHistoryDto> drinkHistoryDtos = drinkHistories.stream()
+                .map(DrinkHistoryDto::of)
+                .collect(Collectors.toList());
+
+        return new DailyDrinkHistoriesResponseDto(
+                drinkHistoryDtos
+        );
+    }
+
     public WeeklyReportResponseDto getDrinkHistory(Long userId, LocalDate endDate) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new WateryException(ExceptionCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new WateryException(ExceptionCode.FORBIDDEN));
 
         LocalDate startDate = endDate.minusDays(7);
         List<DrinkHistory> drinkHistories = drinkHistoryRepository.findByUserIdAndDateRange(userId, startDate, endDate);
@@ -80,7 +106,7 @@ public class DrinkHistoryService {
     @Transactional
     public void deleteDrinkHistory(Long userId, Long drinkHistoryId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new WateryException(ExceptionCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new WateryException(ExceptionCode.FORBIDDEN));
 
         DrinkHistory drinkHistory = drinkHistoryRepository.findById(drinkHistoryId)
                 .orElseThrow(() -> new WateryException(ExceptionCode.DRINK_HISTORY_NOT_FOUND));

@@ -22,6 +22,7 @@ import team.gachi.watery.user.repository.UserRepository;
 import team.gachi.watery.util.StringUtil;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -79,10 +80,14 @@ public class DrinkService {
 
         List<Drink> drinks = drinkRepository.findAllBy(user.getId(), Status.ACTIVE);
 
+        LocalDate searchDate = baseDate != null
+                ? baseDate
+                : LocalDate.now();
+
         List<DrinkDto> drinkDtos = drinks.stream()
                 .map(drink -> {
                     int totalDrinkAmount = drinkHistoryRepository.sumTotalDrinkAmountBy(
-                            drink.getId(), user.getId(), baseDate);
+                            drink.getId(), user.getId(), searchDate);
 
                     return DrinkDto.of(drink, totalDrinkAmount);
                 })
@@ -95,8 +100,12 @@ public class DrinkService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new WateryException(ExceptionCode.USER_NOT_FOUND));
 
+        LocalDate searchDate = baseDate != null
+                ? baseDate
+                : LocalDate.now();
+
         int totalHydrationAmount = drinkHistoryRepository.sumTotalHydrationAmount(
-                user.getId(), baseDate);
+                user.getId(), searchDate);
 
         return HydrationAmountResponseDto.of(
                 user.getDailyHydrationGoal(),

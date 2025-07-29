@@ -40,12 +40,12 @@ public class DrinkHistory extends BaseEntity {
     @Comment("섭취 시간")
     private LocalDateTime drinkAt;
 
-    public static DrinkHistory createDrinkHistory(User user, Drink drink, Integer amount, LocalDateTime localDateTime) {
+    public static DrinkHistory createDrinkHistory(User user, Drink drink, Integer amount, LocalDateTime drinkAt) {
         return DrinkHistory.builder()
                 .user(user)
                 .drink(drink)
                 .amount(amount)
-                .drinkAt(localDateTime)
+                .drinkAt(drinkAt != null ? drinkAt : LocalDateTime.now())
                 .build();
     }
 

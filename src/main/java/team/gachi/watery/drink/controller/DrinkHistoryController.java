@@ -10,6 +10,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import team.gachi.watery.drink.dto.AddDrinkHistoryRequestDto;
 import team.gachi.watery.drink.dto.DailyDrinkHistoriesResponseDto;
+import team.gachi.watery.drink.dto.DailyDrinkHistoriesResponseDto;
+import team.gachi.watery.drink.dto.RecentDrinkHistoryResponseDto;
 import team.gachi.watery.drink.dto.WeeklyReportResponseDto;
 import team.gachi.watery.drink.service.DrinkHistoryService;
 import team.gachi.watery.dto.WateryResponse;
@@ -76,6 +78,30 @@ public class DrinkHistoryController {
         return WateryResponse.of(result);
     }
 
+
+    @Operation(summary = "최근 음료 섭취 기록 조회", description = "특정 음료의 최근 섭취 기록을 조회합니다.")
+    @GetMapping("/recent")
+    public WateryResponse<RecentDrinkHistoryResponseDto> getRecentDrinkHistories(
+            @Parameter(hidden = true)
+            Principal principal,
+
+            @Parameter(
+                    description = "음료 ID",
+                    example = "1"
+            )
+            @RequestParam("drinkId")
+            Long drinkId,
+
+            @Parameter(
+                    description = "조회할 기록 개수 (기본값: 1)",
+                    example = "1"
+            )
+            @RequestParam(value = "limit", defaultValue = "1")
+            int limit
+    ) {
+        RecentDrinkHistoryResponseDto result = drinkHistoryService.getRecentDrinkHistory(Long.valueOf(principal.getName()), drinkId, limit);
+        return WateryResponse.of(result);
+    }
 
     @Operation(summary = "음료 섭취 기록 삭제", description = "음료 섭취 기록을 삭제합니다.")
     @DeleteMapping("/{drinkHistoryId}")

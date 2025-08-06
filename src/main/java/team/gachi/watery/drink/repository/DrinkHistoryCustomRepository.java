@@ -13,5 +13,7 @@ public interface DrinkHistoryCustomRepository {
 
     List<DrinkHistory> findByUserIdAndDateRange(Long userId, LocalDate startDate, LocalDate endDate);
 
+    List<DrinkHistory> findRecentByUserIdAndDrinkId(Long userId, Long drinkId, int limit);
+
     List<DrinkHistory> findBy(Long userId, Long drinkId, LocalDate startDate, LocalDate endDate);
 }

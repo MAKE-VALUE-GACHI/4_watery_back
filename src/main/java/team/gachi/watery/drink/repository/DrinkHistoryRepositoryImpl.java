@@ -82,4 +82,18 @@ public class DrinkHistoryRepositoryImpl implements DrinkHistoryCustomRepository 
                 )
                 .fetch();
     }
+
+    @Override
+    public List<DrinkHistory> findRecentByUserIdAndDrinkId(Long userId, Long drinkId, int limit) {
+        QDrinkHistory drinkHistory = QDrinkHistory.drinkHistory;
+        return queryFactory
+                .selectFrom(drinkHistory)
+                .where(
+                        drinkHistory.user.id.eq(userId),
+                        drinkHistory.drink.id.eq(drinkId)
+                )
+                .orderBy(drinkHistory.drinkAt.desc())
+                .limit(limit)
+                .fetch();
+    }
 }
